@@ -5,6 +5,7 @@ import {
   IHomeProps,
   IPasteToFolder,
 } from './interfaces/IHome';
+import ItemTypes from '../../constants/constants';
 import Folder from './components/Folder';
 
 const FileStructure: React.FC<IHomeProps> = ({ initialData }) => {
@@ -14,7 +15,7 @@ const FileStructure: React.FC<IHomeProps> = ({ initialData }) => {
     let isItemRemoved = false;
     const newData = data.map((item) => {
       let newItem = { ...item };
-      if (movedItem.type === 'folder') {
+      if (movedItem.type === ItemTypes.FOLDER) {
         if (
           item.id === movedItem.folder.id
           && movedItem?.parentFolder?.id !== toFolderId // If dropped a folder into the same folder where it was
@@ -34,7 +35,7 @@ const FileStructure: React.FC<IHomeProps> = ({ initialData }) => {
         newItem.folders = nextFolders;
       }
 
-      if (movedItem.type === 'file' && item.files && item.id !== toFolderId) {
+      if (movedItem.type === ItemTypes.FILE && item.files && item.id !== toFolderId) {
         newItem.files = item.files.filter((file) => {
           if (file.id === movedItem?.id) {
             isItemRemoved = true;
@@ -53,7 +54,7 @@ const FileStructure: React.FC<IHomeProps> = ({ initialData }) => {
     data.map((item) => {
       const newItem = { ...item };
       if (item.id === toFolderId) { // Found the folder where you want to insert the item
-        if (movedItem.type === 'folder') {
+        if (movedItem.type === ItemTypes.FOLDER) {
           return {
             ...newItem,
             folders: [
